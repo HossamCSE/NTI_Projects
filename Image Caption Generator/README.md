@@ -1,99 +1,110 @@
-Image Captioning System 
+Image Captioning System
+1. Project Overview
+This project implements an automatic image captioning system capable of generating meaningful, natural language descriptions for given images.
+It integrates Computer Vision for visual feature extraction and Natural Language Processing for sequential language modeling, producing captions incrementally on a word-by-word basis.
 
-Project Overview
-This project implements an automatic image captioning system, which generates meaningful natural language descriptions for images.
-It combines Computer Vision for image feature extraction and Natural Language Processing for sequence modeling to produce captions word by word.
+2. Key Features
+Visual Feature Extraction: Utilizes the VGG16 architecture pre-trained on the ImageNet dataset.
 
-Key Features:
+Caption Generation: Employs an LSTM-based sequence model for text generation.
 
-Extracts visual features using VGG16 (pre-trained on ImageNet).
+Decoding Strategies: Supports both Greedy Search and Beam Search methods.
 
-Generates captions using LSTM-based sequence model.
+Interactive Web Interface: Includes a Streamlit-based application for real-time demonstrations.
 
-Supports Greedy Search and Beam Search decoding methods.
-
-Provides an interactive Streamlit web app for live demo.
-
-Dataset
+3. Dataset
 Dataset Used: Flickr8k Dataset
 
-Content: ~8,000 images, 5 captions per image
+Content: Approximately 8,000 images, each paired with 5 descriptive captions.
 
-Split: 90% training / 10% testing
+Data Split: 90% for training and 10% for testing.
 
-Ensure that you download and place the dataset in the following structure:
+Required Directory Structure:
 project/
 │
 ├─ Images/             # All Flickr8k images
-├─ captions.txt        # Captions file
+├─ captions.txt        # Caption annotations file
 
-Project Workflow
-Image Feature Extraction
-Uses pre-trained VGG16 to extract 4096-dimensional feature vectors for each image.
+4. Project Workflow
+4.1 Image Feature Extraction
+Utilizes the pre-trained VGG16 network to extract 4,096-dimensional feature vectors for each image.
 
-Caption Preprocessing
-Lowercasing, punctuation removal, and tokenization.
-Added startseq and endseq tokens to mark sentence boundaries.
+4.2 Caption Preprocessing
+Converts all text to lowercase.
 
-Sequence Model Training
-LSTM-based model trained to generate captions word by word.
+Removes punctuation.
 
-Caption Generation
-Supports Greedy Search and Beam Search decoding.
+Tokenizes captions.
 
-Deployment
-Interactive Streamlit app to generate captions for uploaded images.
+Adds special tokens startseq and endseq to indicate sentence boundaries.
 
-Model Architecture
-Image Branch:
-Dense layers applied on VGG16 extracted features with dropout for regularization.
+4.3 Sequence Model Training
+Trains an LSTM-based sequence model to predict the next word in the caption, given the image features and the preceding words.
 
-Text Branch:
-Embedding layer followed by stacked LSTM layers for sequence generation.
+4.4 Caption Generation
+Implements Greedy Search for straightforward decoding.
 
-Fusion & Output:
-Concatenates image and text features → Dense layers → Softmax output for word prediction.
+Implements Beam Search for improved caption diversity and accuracy.
 
-Training Details:
+4.5 Deployment
+Provides a Streamlit web application for real-time caption generation from user-uploaded images.
+
+5. Model Architecture
+Image Processing Branch
+Dense layers applied to VGG16-derived features.
+
+Dropout layers used for regularization.
+
+Text Processing Branch
+Embedding layer to map words to dense vector representations.
+Stacked LSTM layers for sequence generation.
+Fusion and Output
+Concatenates image and text feature representations.
+Applies Dense layers followed by a Softmax output layer for word prediction.
+
+6. Training Configuration
 Embedding Dimension: 256
 LSTM Units: 512
 Batch Size: 32
 Learning Rate: 0.0005
 Epochs: 25
 
-How to Run the Project
-1. Clone the repository
-git clone https://github.com/YourUsername/YourRepoName.git
-cd YourRepoName
+7. Running the Project
+Clone the Repository:
+git clone https://github.com/HossamCSE/NTI_Projects/tree/main/Image%20Caption%20Generator.git
+cd NTI_Projects/Image Caption Generator
 
-2. Install Dependencies
+Install Dependencies:
 pip install -r requirements.txt
 
-3. Prepare Dataset
-Download the Flickr8k dataset and place it under Images/ with captions.txt.
+Prepare the Dataset:
+Download the Flickr8k dataset.
+Place all images in the Images/ directory and captions in captions.txt.
 
-4. Train the Model
 python train_model.py
 
-Extracts features, cleans captions, trains the LSTM model.
+Extracts image features.
+Preprocesses captions.
+Trains the LSTM model.
 Saves final_caption_model.h5 and tokenizer.pkl.
 
-5. Run the Streamlit App
+Run the Web Application:
 streamlit run app.py
 
-Upload an image and the model will generate captions in real-time.
+Upload an image.
+View generated captions in real time.
 
-Project Structure:
+8. Project Structure:
 ├─ app.py                  # Streamlit web app
-├─ train_model.py          # Full training and model building script
-├─ features.pkl            # Extracted image features (generated after first run)
-├─ tokenizer.pkl           # Saved tokenizer for caption sequences
-├─ best_caption_model.h5   # Best model checkpoint
+├─ train_model.py          # Model training and building script
+├─ features.pkl            # Extracted image features
+├─ tokenizer.pkl           # Tokenizer for caption sequences
+├─ best_caption_model.h5   # Best performing model checkpoint
 ├─ final_caption_model.h5  # Final trained model
 ├─ requirements.txt        # Project dependencies
-├─ README.md               # Project documentation
+├─ README.md               # Documentation
 └─ Images/                 # Flickr8k images
 
-License
-This project is released under the MIT License.
-You are free to use, modify, and distribute it with attribution.
+9. License
+This project is distributed under the MIT License.
+You are free to use, modify, and share this work, provided that appropriate attribution is given.
